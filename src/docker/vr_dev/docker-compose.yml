@@ -1,0 +1,35 @@
+version: '2.2'
+services:
+
+  web:
+    build:
+      context: ../dockerfiles/web
+    ports:
+      - 8989:80
+    volumes:
+      - ../../../src/vue/dist:/opt/myapp/src/vue/dist
+
+  app:
+    build:
+      context: ../dockerfiles/app
+    ports:
+      - 9229:9229
+      - 3333:3333
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ../../../src:/opt/myapp/src
+      - node_modules:/opt/myapp/src/node/node_modules
+      - vue_modules:/opt/myapp/src/vue/node_modules
+    init: true
+    command:
+      /bin/sh -c
+      "npm run dev --prefix /opt/myapp/src/node
+      & npm run serve --prefix /opt/myapp/src/vue
+      & tail -f /dev/null"
+
+volumes:
+  node_modules:
+    driver: 'local'
+  vue_modules:
+    driver: 'local'
