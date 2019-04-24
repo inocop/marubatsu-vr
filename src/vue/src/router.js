@@ -20,11 +20,12 @@ export default new Router({
       props: route => ({id: Number(route.params.id)}),
     },
     {
-      path: "/marubatsu_vr",
+      path: "/marubatsu_vr/:id",
       name: "marubatsu_vr",
       meta: { layout: 'none'},
       component: () =>
-        import(/* webpackChunkName: "marubatsu_vr" */ "./views/MaruBatsuVR.vue")
+        import(/* webpackChunkName: "marubatsu_vr" */ "./views/MaruBatsuVR.vue"),
+      props: route => ({id: Number(route.params.id)}),
     },
     {
       path: '*',

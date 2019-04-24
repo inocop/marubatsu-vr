@@ -4,6 +4,7 @@ const GameConst = require('../../common/consts/GameConst')
 const GameRooms = require('../entities/marubatsu/GameRooms')
 const EntryRoom = require('../usecases/marubatsu/EntryRoom')
 const InputMaruBatsu = require('../usecases/marubatsu/InputMaruBatsu')
+const DisconnectRoom = require('../usecases/marubatsu/DisconnectRoom')
 
 module.exports = function(io) {
 
@@ -11,7 +12,7 @@ module.exports = function(io) {
 
   var marubatsuSocket = io.of('/marubatsu_api/')
   marubatsuSocket.on('connection', (socket) => {
-    console.log(`a user connected[id:${ socket.id }]`)
+    console.log(`connected: ${ socket.id }`)
 
     // ルーム一覧取得
     socket.on(GameConst.SOCKET_GET_ROOMS, (callback) => {
@@ -51,8 +52,6 @@ module.exports = function(io) {
           // ゲーム終了通知
           const notify = new Notify(NotifyConst.NOTIFY_UPDATED, targetRoom.gameState.message)
           marubatsuSocket.in(`playroom_${roomId}`).emit(GameConst.SOCKET_CHANGE_GAME_NOTIFY, notify, targetRoom.getPlayData())
-
-          // Room一覧から削除
           gameRooms.clearRoom(targetRoom.id)
         }
         else {
@@ -73,7 +72,21 @@ module.exports = function(io) {
           socket.leave(roomId);
         }
       }
+
+      new DisconnectRoom(socket, gameRooms, (roomId) => {
+        const notify = new Notify(NotifyConst.NOTIFY_UPDATED)
+        marubatsuSocket.emit(GameConst.SOCKET_CHANGE_ROOMS_NOTIFY, notify, gameRooms.getRoom(roomId).params)
+      }).exec()
     })
 
+    // 切断時の処理
+    socket.on("disconnect", () => {
+      console.log(`disconnected: ${ socket.id }`)
+
+      new DisconnectRoom(socket, gameRooms, (roomId) => {
+        const notify = new Notify(NotifyConst.NOTIFY_UPDATED)
+        marubatsuSocket.emit(GameConst.SOCKET_CHANGE_ROOMS_NOTIFY, notify, gameRooms.getRoom(roomId).params)
+      }).exec()
+    })
   });
 }

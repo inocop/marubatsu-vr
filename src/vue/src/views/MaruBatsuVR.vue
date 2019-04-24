@@ -31,16 +31,10 @@
       <a-text position="1 1 0" rotation="0 180 0" scale="3 3 0" value="Player2" color="black"></a-text>
     </a-camera>
 
-    <a-entity id="square">
-      <a-plane id="square0" @click="postInput(0, 0, $event)" src="#square" position="-1 0 -1" rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
-      <a-plane id="square1" @click="postInput(0, 1, $event)" src="#square" position="-1 0 0"  rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
-      <a-plane id="square2" @click="postInput(0, 2, $event)" src="#square" position="-1 0 1"  rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
-      <a-plane id="square3" @click="postInput(1, 0, $event)" src="#square" position="0 0 -1"  rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
-      <a-plane id="square4" @click="postInput(1, 1, $event)" src="#square" position="0 0 0"   rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
-      <a-plane id="square5" @click="postInput(1, 2, $event)" src="#square" position="0 0 1"   rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
-      <a-plane id="square6" @click="postInput(2, 0, $event)" src="#square" position="1 0 -1"  rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
-      <a-plane id="square7" @click="postInput(2, 1, $event)" src="#square" position="1 0 0"   rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
-      <a-plane id="square8" @click="postInput(2, 2, $event)" src="#square" position="1 0 1"   rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
+    <a-entity id="square" v-for="(row, index) in playdata" :key="index">
+      <a-plane :id="`square_${index}x0)`" @click="postInput(index, 0, $event)" :src="getResoure(row[0])" :position="`${index - 1} 0 -1`" rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
+      <a-plane :id="`square_${index}x1)`" @click="postInput(index, 1, $event)" :src="getResoure(row[1])" :position="`${index - 1} 0  0`" rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
+      <a-plane :id="`square_${index}x2)`" @click="postInput(index, 2, $event)" :src="getResoure(row[2])" :position="`${index - 1} 0  1`" rotation="-90 0 0" width="1" height="1" color="#EEEEEE"></a-plane>
     </a-entity>
 
     <a-sky color="#ECECEC" src="#city"></a-sky>
@@ -69,6 +63,17 @@
               },
     }),
     methods: {
+      getResoure(src){
+        if (src === "maru") {
+          return "#circle"
+        }
+        else if (src === "batsu") {
+          return "#cross"
+        }
+        else {
+          return "#square"
+        }
+      },
       postInput(y, x, event) {
         if (!event.target.innerText) {
           this.$socket.emit(this.$GameConst.SOCKET_INPUT_GAME, this.id, {y: y, x: x});

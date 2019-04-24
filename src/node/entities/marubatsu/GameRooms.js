@@ -9,6 +9,10 @@ module.exports = class GameRooms {
     }
   }
 
+  count() {
+    return this.gameRooms.length
+  }
+
   getRoom(roomId) {
     return this.gameRooms[roomId]
   }

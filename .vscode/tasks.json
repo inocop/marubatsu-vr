@@ -6,13 +6,13 @@
         {
             "label": "node_debug",
             "type": "shell",
-            "command": "docker exec vue_dev_app_1 bash -c 'npm run debug --prefix /opt/myapp/src/node'",
+            "command": "docker exec vr_dev_app_1 bash -c 'npm run debug --prefix /opt/myapp/src/node'",
             "problemMatcher": []
         },
         {
             "label": "kill_debug",
             "type": "shell",
-            "command": "docker exec vue_dev_app_1 bash -c 'pkill -f inspect'",
+            "command": "docker exec vr_dev_app_1 bash -c 'pkill -f inspect'",
             "problemMatcher": []
         },
     ]
