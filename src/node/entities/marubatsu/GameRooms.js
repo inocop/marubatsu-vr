@@ -10,7 +10,7 @@ module.exports = class GameRooms {
   }
 
   count() {
-    return this.gameRooms.length
+    return Object.keys(this.gameRooms).length
   }
 
   getRoom(roomId) {

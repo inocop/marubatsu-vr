@@ -1,5 +1,3 @@
-const Game = require('../../entities/marubatsu/Game');
-
 module.exports = class DisconnectRoom {
 
   constructor(socket, gameRooms, callback) {
