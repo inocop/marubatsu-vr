@@ -6,8 +6,8 @@
         <thead>
           <tr>
             <th>Room</th>
-            <th>Status</th>
-            <th>Entry</th>
+            <th>状態</th>
+            <th></th>
           </tr>
         </thead>
 
@@ -16,8 +16,7 @@
             <td>{{ room.name }}</td>
             <td>{{ getRoomState(room) }}</td>
             <td v-if="room.playerCount < 2" >
-              <router-link :to="{name: 'marubatsu_vr', params: { id: room.id }}">VR</router-link> | 
-              <router-link :to="{name: 'marubatsu_2d', params: { id: room.id }}">2D</router-link>
+              <router-link :to="{name: 'marubatsu_vr', params: { id: room.id }}">エントリー</router-link>
             </td>
             <td v-else></td>
           </tr>
@@ -37,13 +36,13 @@
     methods: {
       getRoomState(room) {
         if (room.playerCount === 0) {
-          return "empty"
+          return "空き"
         }
         else if (room.playerCount === 1){
-          return "waiting"
+          return "対戦者待ち"
         }
         else {
-          return "playing"
+          return "プレイ中"
         }
       }
     },

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">MaruBatsu VR</router-link>
+      <router-link to="/">まるばつゲーム VR</router-link>
     </div>
     <router-view />
   </div>
@@ -23,6 +23,7 @@
 
 #nav a {
   font-weight: bold;
+  font-size: x-large;
   color: #2c3e50;
 }
 
