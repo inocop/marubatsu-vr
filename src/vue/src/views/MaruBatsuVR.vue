@@ -7,9 +7,7 @@
       <img crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg" id="city">
     </a-assets>
 
-    <a-camera
-       id="player1"
-       wasd-controls-enabled="false"
+    <a-camera id="player1" wasd-controls-enabled="false"
       :camera="player1.camera"
       :look-controls="player1.lookControls"
       :position="player1.position"
@@ -19,9 +17,8 @@
       <a-text position="1 1 0" rotation="0 180 0" scale="3 3 0" value="Player1" color="black"></a-text>
     </a-camera>
 
-    <a-camera
-      id="player2"
-      wasd-controls-enabled="false"
+    <a-camera id="player2" wasd-controls-enabled="false"
+      :visible="playStart"
       :camera="player2.camera"
       :look-controls="player2.lookControls"
       :position="player2.position"
@@ -49,6 +46,7 @@
       id: Number
     },
     data: () => ({
+      playStart: "false",
       playdata: [],
       player1: { camera: { active: false },
                  lookControls: { enabled: false },
@@ -88,16 +86,20 @@
     mounted(){
       // レシーバー登録
       this.$socket.on(this.$GameConst.SOCKET_CHANGE_GAME_NOTIFY, (notify, playdata) => {
+        // ゲーム開始
         if (notify.type === this.$NotifyConst.NOTIFY_CREATED) {
+          this.playStart = "true"
+        }
+        // ゲーム進行
+        else if (notify.type === this.$NotifyConst.NOTIFY_UPDATED) {
           this.playdata = JSON.parse(playdata)
           //event.target.setAttribute("src", "#circle")
           console.log(playdata)
         }
-        else if (notify.type === this.$NotifyConst.NOTIFY_UPDATED) {
+        // ゲーム終了
+        else if (notify.type === this.$NotifyConst.NOTIFY_DELETED) {
           this.playdata = JSON.parse(playdata)
-
           setTimeout(() => {
-            // ゲーム終了
             alert(notify.message);
             this.$router.push({ path: '/' });
           }, 300)
@@ -109,13 +111,12 @@
         if (!error) {
           this.playdata = JSON.parse(playdata)
 
-          //const targetPlayer = isPlayer1 ? document.querySelector("#player1") : document.querySelector("#player2")
-          //targetPlayer.setAttribute("camera", "active", true);
-          //targetPlayer.setAttribute("lookControls", "enabled", true);
-
           const targetPlayer = isPlayer1 ? this.player1 : this.player2
           this.$set(targetPlayer, "camera", { "active": true })
           this.$set(targetPlayer, "lookControls", { "enabled": true })
+          if (!isPlayer1) {
+            this.playStart = "true"
+          }
         }
         else {
           console.log(error.message)

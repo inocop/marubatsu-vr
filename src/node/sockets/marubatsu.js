@@ -33,6 +33,12 @@ module.exports = function(io) {
         callback(null, targetRoom.getPlayData(), targetRoom.isPlayer1(socket.id))
         const notify = new Notify(NotifyConst.NOTIFY_UPDATED)
         marubatsuSocket.emit(GameConst.SOCKET_CHANGE_ROOMS_NOTIFY, notify, targetRoom.params)
+
+        // playerが揃った場合、ゲーム開始の通知を送信
+        if (targetRoom.player1 && targetRoom.player2) {
+          const startNotify = new Notify(NotifyConst.NOTIFY_CREATED)
+          marubatsuSocket.in(`playroom_${targetRoom.id}`).emit(GameConst.SOCKET_CHANGE_GAME_NOTIFY, startNotify)
+        }
       })
       .catch((error) => {
         callback({ message: error.message })
@@ -49,14 +55,14 @@ module.exports = function(io) {
       new InputMaruBatsu(targetRoom, socket.id, data).exec()
       .then(() => {
         if (targetRoom.isGameEnd) {
-          // ゲーム終了通知
-          const notify = new Notify(NotifyConst.NOTIFY_UPDATED, targetRoom.gameState.message)
+          // ゲーム終了
+          const notify = new Notify(NotifyConst.NOTIFY_DELETED, targetRoom.gameState.message)
           marubatsuSocket.in(`playroom_${roomId}`).emit(GameConst.SOCKET_CHANGE_GAME_NOTIFY, notify, targetRoom.getPlayData())
           gameRooms.clearRoom(targetRoom.id)
         }
         else {
-          // ゲーム終了継続
-          const notify = new Notify(NotifyConst.NOTIFY_CREATED)
+          // ゲーム進行
+          const notify = new Notify(NotifyConst.NOTIFY_UPDATED)
           marubatsuSocket.in(`playroom_${roomId}`).emit(GameConst.SOCKET_CHANGE_GAME_NOTIFY, notify, targetRoom.getPlayData())
         }
       })
