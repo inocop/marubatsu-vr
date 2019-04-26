@@ -30,7 +30,7 @@ module.exports = function(io) {
       new EntryRoom(targetRoom, socket.id).exec()
       .then(() => {
         socket.join(`playroom_${roomId}`);
-        callback(null, targetRoom.getPlayData())
+        callback(null, targetRoom.getPlayData(), targetRoom.isPlayer1(socket.id))
         const notify = new Notify(NotifyConst.NOTIFY_UPDATED)
         marubatsuSocket.emit(GameConst.SOCKET_CHANGE_ROOMS_NOTIFY, notify, targetRoom.params)
       })

@@ -24,6 +24,10 @@ module.exports = class Game {
     return Const.STATE_END(this.gameState.state)
   }
 
+  isPlayer1(socketId) {
+    return (this.player1 === socketId)
+  }
+
   setPlayer(socketId) {
     if (!this.player1) {
       this.player1 = socketId

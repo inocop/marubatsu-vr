@@ -51,16 +51,16 @@
     data: () => ({
       playdata: [],
       player1: { camera: { active: false },
-                lookControls: { enabled: false },
-                position: {x: 0,   y: 1.5, z: -4},
-                rotation: {x: -20, y: 180, z: 0},
-              },
+                 lookControls: { enabled: false },
+                 position: { x: 0,   y: 1.5, z: -4 },
+                 rotation: { x: -20, y: 180, z: 0 },
+               },
       player2: { camera: { active: false },
-                lookControls: { enabled: false },
-                rotation: {x: -20, y: 0,   z: 0},
-                position: {x: 0,   y: 1.5, z: 4},
-                rotation: {x: -20, y: 0,   z: 0},
-              },
+                 lookControls: { enabled: false },
+                 rotation: { x: -20, y: 0,   z: 0 },
+                 position: { x: 0,   y: 1.5, z: 4 },
+                 rotation: { x: -20, y: 0,   z: 0 },
+               },
     }),
     methods: {
       getResoure(src){
@@ -104,18 +104,24 @@
         }
       })
 
-      this.$socket.emit(this.$GameConst.SOCKET_ENTRY_GAME, this.id, (error, playdata) => {
+      // Gameエントリー
+      this.$socket.emit(this.$GameConst.SOCKET_ENTRY_GAME, this.id, (error, playdata, isPlayer1) => {
         if (!error) {
           this.playdata = JSON.parse(playdata)
-        }else{
+
+          //const targetPlayer = isPlayer1 ? document.querySelector("#player1") : document.querySelector("#player2")
+          //targetPlayer.setAttribute("camera", "active", true);
+          //targetPlayer.setAttribute("lookControls", "enabled", true);
+
+          const targetPlayer = isPlayer1 ? this.player1 : this.player2
+          this.$set(targetPlayer, "camera", { "active": true })
+          this.$set(targetPlayer, "lookControls", { "enabled": true })
+        }
+        else {
           console.log(error.message)
         }
         console.log(this.playdata)
       })
-
-      const targetCamera = this.player2
-      this.$set(targetCamera, "camera", {active: true})
-      this.$set(targetCamera, "lookControls", {enabled: true})
     }
   }
 </script>
