@@ -1,3 +1,4 @@
+import env from './env/index';
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -17,7 +18,7 @@ Vue.prototype.$NotifyConst = NotifyConst
 
 // socket.ioをロード
 import io from 'socket.io-client';
-const socket = io('localhost:8989/marubatsu_api/');
+const socket = io(env.WEBSOCKET_URL);
 Vue.prototype.$socket = socket
 
 Vue.config.productionTip = false;
