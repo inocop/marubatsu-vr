@@ -49,12 +49,12 @@
       playStart: "false",
       playdata: [],
       player1: { camera: { active: false },
-                 lookControls: { enabled: false },
+                 lookControls: { enabled: false, reverseMouseDrag: true },
                  position: { x: 0,   y: 1.5, z: -4 },
                  rotation: { x: -20, y: 180, z: 0 },
                },
       player2: { camera: { active: false },
-                 lookControls: { enabled: false },
+                 lookControls: { enabled: false, reverseMouseDrag: true },
                  rotation: { x: -20, y: 0,   z: 0 },
                  position: { x: 0,   y: 1.5, z: 4 },
                  rotation: { x: -20, y: 0,   z: 0 },
@@ -93,8 +93,6 @@
         // ゲーム進行
         else if (notify.type === this.$NotifyConst.NOTIFY_UPDATED) {
           this.playdata = JSON.parse(playdata)
-          //event.target.setAttribute("src", "#circle")
-          console.log(playdata)
         }
         // ゲーム終了
         else if (notify.type === this.$NotifyConst.NOTIFY_DELETED) {
@@ -112,16 +110,16 @@
           this.playdata = JSON.parse(playdata)
 
           const targetPlayer = isPlayer1 ? this.player1 : this.player2
-          this.$set(targetPlayer, "camera", { "active": true })
-          this.$set(targetPlayer, "lookControls", { "enabled": true })
+          this.$set(targetPlayer, "camera", { active: true })
+          this.$set(targetPlayer, "lookControls", { enabled: true })
           if (!isPlayer1) {
             this.playStart = "true"
           }
         }
         else {
-          console.log(error.message)
+          alert(error.message);
+          this.$router.push({ path: '/' });
         }
-        console.log(this.playdata)
       })
     }
   }
