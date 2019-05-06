@@ -1,9 +1,9 @@
 <template>
   <a-scene>
     <a-assets>
-      <img src="/images/tile.png" id="square">
-      <img src="/images/maru.png" id="circle">
-      <img src="/images/batsu.png" id="cross">
+      <img src="/images/square.png" id="square">
+      <img src="/images/circle.png" id="circle">
+      <img src="/images/cross.png" id="cross">
       <img crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg" id="city">
     </a-assets>
 
@@ -13,7 +13,7 @@
       :position="player1.position"
       :rotation="player1.rotation">
       <a-cursor fuse=false fuse-timeout=1000></a-cursor>
-      <a-box color="#998877"></a-box>
+      <a-box color="#998877" scale="1.25 1.25 1"></a-box>
       <a-text position="1 1 0" rotation="0 180 0" scale="3 3 0" value="Player1" color="black"></a-text>
     </a-camera>
 
