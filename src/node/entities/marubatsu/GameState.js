@@ -130,11 +130,11 @@ module.exports = class GameState {
 
     if (lineValue.length === lineValue.filter(value => value === INPUT_MARU).length) {
       this.state = Const.STATE_WIN_MARU
-      this.message = "maruの勝ち"
+      this.message = "〇の勝ち"
     }
     else if (lineValue.length === lineValue.filter(value => value === INPUT_BATSU).length) {
       this.state = Const.STATE_WIN_BATSU
-      this.message = "batsuの勝ち"
+      this.message = "×の勝ち"
     }
   }
 }
