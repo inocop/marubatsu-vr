@@ -11,7 +11,7 @@ services:
       - ../dockerfiles/web_prd/myapp.conf:/var/lib/nginx-conf/kinoue.tk.ssl.conf.erb:ro
     environment:
       DOMAINS: "kinoue.tk -> http://app"
-      STAGE: 'production'
+      #STAGE: 'production'
       WORKER_PROCESSES: 'auto'
       WEBSOCKET: 'true'
     logging:
