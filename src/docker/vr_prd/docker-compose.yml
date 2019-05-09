@@ -7,11 +7,8 @@ services:
     ports:
       - '80:80'
       - '443:443'
-    volumes:
-      - ../../../src/vue/dist:/opt/myapp/src/vue/dist
-      - ../dockerfiles/web_prd/myapp.conf:/var/lib/nginx-conf/kinoue.tk.ssl.conf.erb:ro
     environment:
-      DOMAINS: "kinoue.tk"
+      DOMAINS: "kinoue.tk -> http://app:3000"
       STAGE: 'production'
       WORKER_PROCESSES: 'auto'
       WEBSOCKET: 'true'
@@ -24,10 +21,12 @@ services:
       context: ../dockerfiles/app
     environment:
       - NODE_ENV=production
-    ports:
-      - 3000:3000
+    expose:
+      - "3000"
     volumes:
       - ../../../src:/opt/myapp/src
+      - node_modules:/opt/myapp/src/node/node_modules
+      - vue_modules:/opt/myapp/src/vue/node_modules
     init: true
     command:
       /bin/sh -c
@@ -40,3 +39,8 @@ services:
       driver: "journald"
     restart: always
 
+volumes:
+  node_modules:
+    driver: 'local'
+  vue_modules:
+    driver: 'local'
