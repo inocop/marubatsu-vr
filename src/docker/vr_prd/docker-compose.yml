@@ -11,7 +11,7 @@ services:
       - ../../../src/vue/dist:/opt/myapp/src/vue/dist
       - ../dockerfiles/web_prd/myapp.conf:/var/lib/nginx-conf/kinoue.tk.ssl.conf.erb:ro
     environment:
-      DOMAINS: "kinoue.tk -> http://app"
+      DOMAINS: "kinoue.tk"
       STAGE: 'production'
       WORKER_PROCESSES: 'auto'
       WEBSOCKET: 'true'
@@ -32,6 +32,7 @@ services:
     command:
       /bin/sh -c
       "  npm install        --prefix /opt/myapp/src/vue
+      && npm install        --prefix /opt/myapp/src/vue --only=dev
       && npm install        --prefix /opt/myapp/src/node
       && npm run production --prefix /opt/myapp/src/vue
       && npm run start      --prefix /opt/myapp/src/node"
