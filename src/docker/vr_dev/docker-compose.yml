@@ -3,7 +3,7 @@ services:
 
   web:
     build:
-      context: ../dockerfiles/web
+      context: ../dockerfiles/web_dev
     ports:
       - 8989:80
     volumes:
@@ -24,7 +24,7 @@ services:
     init: true
     command:
       /bin/sh -c
-      "npm run dev --prefix /opt/myapp/src/node
+      " npm run dev   --prefix /opt/myapp/src/node
       & npm run serve --prefix /opt/myapp/src/vue
       & tail -f /dev/null"
 

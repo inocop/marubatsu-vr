@@ -1,16 +1,45 @@
 version: '2.2'
 services:
+
+  web:
+    build:
+      context: ../dockerfiles/web_prd
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ../dockerfiles/web_prd/myapp.conf:/var/lib/nginx-conf/kinoue.tk.ssl.conf.erb:ro
+    environment:
+      DOMAINS: "kinoue.tk -> http://app"
+      STAGE: 'production'
+      WORKER_PROCESSES: 'auto'
+      WEBSOCKET: 'true'
+    logging:
+      driver: "journald"
+    restart: always
+
   app:
     build:
-      context: ../dockerfiles/web
+      context: ../dockerfiles/app
     environment:
       - NODE_ENV=production
     ports:
       - 3000:3000
     volumes:
       - ../../../src:/opt/myapp/src
+      - node_modules:/opt/myapp/src/node/node_modules
+      - vue_modules:/opt/myapp/src/vue/node_modules
     init: true
     command:
-      npm run start --prefix /opt/myapp/src/node
+      /bin/sh -c
+      "  npm run production --prefix /opt/myapp/src/vue
+      && npm run start      --prefix /opt/myapp/src/node"
     logging:
       driver: "journald"
+    restart: always
+
+volumes:
+  node_modules:
+    driver: 'local'
+  vue_modules:
+    driver: 'local'
