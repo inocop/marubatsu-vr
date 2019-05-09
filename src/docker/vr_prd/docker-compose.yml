@@ -32,7 +32,9 @@ services:
     init: true
     command:
       /bin/sh -c
-      "  npm run production --prefix /opt/myapp/src/vue
+      "  npm install        --prefix /opt/myapp/src/vue
+      && npm install        --prefix /opt/myapp/src/node
+      && npm run production --prefix /opt/myapp/src/vue
       && npm run start      --prefix /opt/myapp/src/node"
     logging:
       driver: "journald"
