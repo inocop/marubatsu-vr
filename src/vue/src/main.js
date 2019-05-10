@@ -11,9 +11,9 @@ Vue.component('default-layout', DefaultLayout);
 Vue.component('none-layout',    NoneLayout);
 
 // commonクラスをロード
-import GameConst from '../../common/consts/GameConst'
-import NotifyConst from '../../common/consts/NotifyConst'
-Vue.prototype.$GameConst = GameConst
+import SocketConst from '../../consts/marubatus/SocketConst'
+import NotifyConst from '../../consts/marubatus/NotifyConst'
+Vue.prototype.$SocketConst = SocketConst
 Vue.prototype.$NotifyConst = NotifyConst
 
 // socket.ioをロード

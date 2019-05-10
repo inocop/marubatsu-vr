@@ -1,13 +1,14 @@
-const Game = require('../../entities/marubatsu/Game')
+const Room = require('../entities/Room')
+
 
 module.exports = class InputMaruBatsu {
 
-  constructor(game, socketId, data) {
-    if (!(game instanceof Game)) {
+  constructor(room, socketId, data) {
+    if (!(room instanceof Room)) {
       throw new TypeError()
     }
 
-    this.game = game
+    this.room = room
     this.socketId = socketId
     this.data = data
   }
@@ -18,7 +19,7 @@ module.exports = class InputMaruBatsu {
         return
       }
 
-      if (this.game.setPlayData(this.socketId, this.data)) {
+      if (this.room.setPlayData(this.socketId, this.data)) {
         resolve()
       }
     })
@@ -26,18 +27,18 @@ module.exports = class InputMaruBatsu {
 
   _validateInput() {
     // 2人いる状態でないと入力不可
-    if (!(this.game.player1 && this.game.player2)){
+    if (!(this.room.player1 && this.room.player2)){
       return false
     }
 
     // socketIdがplayer1 or player2と一致すること
     //if (![this.player1, this.player2].filter(p => p != null).includes(socketId))
-    if (!(this.socketId === this.game.player1 || this.socketId === this.game.player2)) {
+    if (!(this.socketId === this.room.player1 || this.socketId === this.room.player2)) {
       return false
     }
 
     // 連続での入力不可
-    if (this.game.lastInputPlayer === this.socketId) {
+    if (this.room.lastInputPlayer === this.socketId) {
       return false
     }
 

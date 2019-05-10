@@ -1,10 +1,11 @@
-const Const = require('../../../common/consts/GameConst');
+const RoomConst = require('../../../../consts/marubatus/RoomConst');
 
 const INPUT_MARU   = "maru"
 const INPUT_BATSU  = "batsu"
 const INPUT_VALUES = [ INPUT_MARU, INPUT_BATSU ]
 
-module.exports = class GameState {
+
+module.exports = class PlayState {
 
   constructor () {
     // 3x3の二次元配列を生成
@@ -16,17 +17,17 @@ module.exports = class GameState {
       }
     }
 
-    this.state = Const.STATE_STANDBY
+    this.state = RoomConst.STATE_STANDBY
     this.message = null
   }
 
   start(){
-    this.state = Const.STATE_PLAYING
+    this.state = RoomConst.STATE_PLAYING
   }
 
   // 入力値を登録
   addInput({y, x, value = ""} = {}) {
-    if (this.state !== Const.STATE_PLAYING){
+    if (this.state !== RoomConst.STATE_PLAYING){
       return
     }
 
@@ -54,7 +55,7 @@ module.exports = class GameState {
     this._judgeVertical()
     this._judgeDiagonal()
 
-    if (Const.STATE_END(this.state)) {
+    if (RoomConst.STATE_END(this.state)) {
       console.log(this.message)
       return
     }
@@ -63,13 +64,13 @@ module.exports = class GameState {
     for (var y=0; y<this.inputMap.length; y++){
       for (var x=0; x<this.inputMap[y].length; x++){
         if (this.inputMap[y][x] === "") {
-          this.state = Const.STATE_PLAYING
+          this.state = RoomConst.STATE_PLAYING
           this.message = "プレイ継続"
           return
         }
       }
     }
-    this.state = Const.STATE_DRAW
+    this.state = RoomConst.STATE_DRAW
     this.message = "引き分け";
     console.log(this.message)
   }
@@ -126,14 +127,14 @@ module.exports = class GameState {
    * @param {*} lineValue
    */
   _judgeWinner(lineValue = []) {
-    if (Const.STATE_END(this.state)) return
+    if (RoomConst.STATE_END(this.state)) return
 
     if (lineValue.length === lineValue.filter(value => value === INPUT_MARU).length) {
-      this.state = Const.STATE_WIN_MARU
+      this.state = RoomConst.STATE_WIN_MARU
       this.message = "〇の勝ち"
     }
     else if (lineValue.length === lineValue.filter(value => value === INPUT_BATSU).length) {
-      this.state = Const.STATE_WIN_BATSU
+      this.state = RoomConst.STATE_WIN_BATSU
       this.message = "×の勝ち"
     }
   }

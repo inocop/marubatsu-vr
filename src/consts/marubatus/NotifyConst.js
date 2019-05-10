@@ -1,3 +1,6 @@
+/**
+ * 通知タイプ定数
+ */
 module.exports = class NotifyConst {
 
   static get NOTIFY_CREATED() {

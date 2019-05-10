@@ -1,7 +1,8 @@
-const Const = require('../../../common/consts/GameConst');
-const GameState = require('./GameState');
+const RoomConst = require('../../../../consts/marubatus/RoomConst');
+const PlayState = require('./PlayState');
 
-module.exports = class Game {
+
+module.exports = class Room {
 
   constructor (id, name) {
     this.id         = id
@@ -9,7 +10,7 @@ module.exports = class Game {
     this.player1    = null
     this.player2    = null
     this.maruPlayer = null
-    this.gameState  = new GameState()
+    this.playState  = new PlayState()
     this.lastInputPlayer = null
   }
 
@@ -21,7 +22,7 @@ module.exports = class Game {
   }
 
   get isGameEnd(){
-    return Const.STATE_END(this.gameState.state)
+    return RoomConst.STATE_END(this.playState.state)
   }
 
   isPlayer1(socketId) {
@@ -38,13 +39,13 @@ module.exports = class Game {
   }
 
   getPlayData(){
-    return JSON.stringify(this.gameState.inputMap)
+    return JSON.stringify(this.playState.inputMap)
   }
 
   setPlayData(socketId, data) {
     // 初回入力したプレイヤーを〇とする
-    if (this.gameState.state === Const.STATE_STANDBY) {
-      this.gameState.start()
+    if (this.playState.state === RoomConst.STATE_STANDBY) {
+      this.playState.start()
 
       if (socketId === this.player1) {
         this.maruPlayer = this.player1
@@ -55,7 +56,7 @@ module.exports = class Game {
     }
 
     let value = (socketId === this.maruPlayer) ? "maru" : "batsu"
-    if (this.gameState.addInput({y: data.y, x: data.x, value: value})) {
+    if (this.playState.addInput({y: data.y, x: data.x, value: value})) {
       this.lastInputPlayer = socketId
       return true
     }

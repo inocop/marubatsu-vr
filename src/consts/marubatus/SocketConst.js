@@ -1,6 +1,9 @@
-module.exports = class GameConst {
+/**
+ * socket.io定数
+ */
+module.exports = class SocketConst {
   /**
-   * Client -> Server用socket.io定数
+   * Client -> Server用
    */
 
   /** ルーム一覧取得 */
@@ -22,7 +25,7 @@ module.exports = class GameConst {
 
 
   /**
-   * Server -> Client用socket.io定数
+   * Server -> Client用
    */
 
   /** ルーム一覧変更通知 */
@@ -32,29 +35,5 @@ module.exports = class GameConst {
   /** マルバツの状態変更通知 */
   static get SOCKET_CHANGE_GAME_NOTIFY() {
     return "SOCKET_CHANGE_GAME_NOTIFY"
-  }
-
-
-  /**
-   *  Gameステータス
-   */
-  static get STATE_STANDBY() {
-    return "STATE_STANDBY"
-  }
-  static get STATE_PLAYING() {
-    return "STATE_PLAYING"
-  }
-  static get STATE_WIN_MARU() {
-    return "STATE_WIN_MARU"
-  }
-  static get STATE_WIN_BATSU() {
-    return "STATE_WIN_BATSU"
-  }
-  static get STATE_DRAW() {
-    return "STATE_DRAW"
-  }
-
-  static STATE_END(state) {
-    return (state === this.STATE_WIN_MARU || state === this.STATE_WIN_BATSU || state === this.STATE_DRAW)
   }
 }

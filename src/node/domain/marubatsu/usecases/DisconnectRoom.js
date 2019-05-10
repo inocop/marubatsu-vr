@@ -1,8 +1,8 @@
 module.exports = class DisconnectRoom {
 
-  constructor(socket, gameRooms, callback) {
+  constructor(socket, roomList, callback) {
     this.socket = socket
-    this.gameRooms = gameRooms
+    this.roomList = roomList
     this.callback = callback
   }
 
@@ -12,11 +12,11 @@ module.exports = class DisconnectRoom {
   exec() {
     console.log("DisconnectRoom#exec")
 
-    for (var id=1; id < (this.gameRooms.count() + 1); id++){
-      const room = this.gameRooms.getRoom(id)
+    for (var id=1; id < (this.roomList.count() + 1); id++){
+      const room = this.roomList.getRoom(id)
       console.log(`socket.id: ${this.socket.id}, player1: ${room.player1}, player2: ${room.player2}`)
       if (this.socket.id === room.player1 || this.socket.id === room.player2) {
-        this.gameRooms.clearRoom(id)
+        this.roomList.clearRoom(id)
         this.callback(id)
       }
     }

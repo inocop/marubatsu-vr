@@ -74,18 +74,18 @@
       },
       postInput(y, x, event) {
         if (!event.target.innerText) {
-          this.$socket.emit(this.$GameConst.SOCKET_INPUT_GAME, this.id, {y: y, x: x});
+          this.$socket.emit(this.$SocketConst.SOCKET_INPUT_GAME, this.id, {y: y, x: x});
         }
       }
     },
      beforeRouteLeave (to, from, next) {
-       this.$socket.off(this.$GameConst.SOCKET_CHANGE_GAME_NOTIFY)
-       this.$socket.emit(this.$GameConst.SOCKET_LEAVE_GAME);
+       this.$socket.off(this.$SocketConst.SOCKET_CHANGE_GAME_NOTIFY)
+       this.$socket.emit(this.$SocketConst.SOCKET_LEAVE_GAME);
        next();
     },
     mounted(){
       // レシーバー登録
-      this.$socket.on(this.$GameConst.SOCKET_CHANGE_GAME_NOTIFY, (notify, playdata) => {
+      this.$socket.on(this.$SocketConst.SOCKET_CHANGE_GAME_NOTIFY, (notify, playdata) => {
         // ゲーム開始
         if (notify.type === this.$NotifyConst.NOTIFY_CREATED) {
           this.playStart = "true"
@@ -105,7 +105,7 @@
       })
 
       // Gameエントリー
-      this.$socket.emit(this.$GameConst.SOCKET_ENTRY_GAME, this.id, (error, playdata, isPlayer1) => {
+      this.$socket.emit(this.$SocketConst.SOCKET_ENTRY_GAME, this.id, (error, playdata, isPlayer1) => {
         if (!error) {
           this.playdata = JSON.parse(playdata)
 

@@ -12,7 +12,7 @@
         </thead>
 
         <tbody>
-          <tr v-for="(room) in gameRooms" :key="room.id">
+          <tr v-for="(room) in roomList" :key="room.id">
             <td>{{ room.name }}</td>
             <td>{{ getRoomState(room) }}</td>
             <td v-if="room.playerCount < 2" >
@@ -31,7 +31,7 @@
 <script>
   export default {
     data: () => ({
-      gameRooms: [],
+      roomList: [],
     }),
     methods: {
       getRoomState(room) {
@@ -48,19 +48,19 @@
     },
     mounted(){
       // レシーバー登録
-      this.$socket.on(this.$GameConst.SOCKET_CHANGE_ROOMS_NOTIFY, (notify, room) => {
+      this.$socket.on(this.$SocketConst.SOCKET_CHANGE_ROOMS_NOTIFY, (notify, room) => {
         if (notify.type === this.$NotifyConst.NOTIFY_ERRORED) {
           this.invalid_name = notify.message
         }
         else if (notify.type === this.$NotifyConst.NOTIFY_UPDATED) {
-          const updateIndex = this.gameRooms.findIndex((r) => r.id === room.id)
-          this.$set(this.gameRooms, updateIndex, room)
+          const updateIndex = this.roomList.findIndex((r) => r.id === room.id)
+          this.$set(this.roomList, updateIndex, room)
         }
       })
 
       // Roomリストをリクエスト
-      this.$socket.emit(this.$GameConst.SOCKET_GET_ROOMS, (error, gameRooms) => {
-        if (!error) this.gameRooms = gameRooms
+      this.$socket.emit(this.$SocketConst.SOCKET_GET_ROOMS, (error, roomList) => {
+        if (!error) this.roomList = roomList
       })
     },
 }
