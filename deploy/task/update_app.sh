@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 
-set -eux
+set -euxo pipefail
 
-RELEASE_DIR="/release/marubatsu-vr"
+RELEASE_DIR="/marubatsu/marubatsu-vr"
 
 pushd ${RELEASE_DIR}
-  git checkout master
-  git pull
+  sudo git fetch
+  sudo git reset --hard origin/master
 popd
 
-pushd ${RELEASE_DIR}/src/docker
-  docker-compose build
-  docker-compose restart
+pushd ${RELEASE_DIR}/src/docker/vr_prd
+  sudo docker-compose build
+  sudo docker-compose restart
 popd
-
-
-
