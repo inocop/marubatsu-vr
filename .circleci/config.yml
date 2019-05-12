@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "${FINGERPRINT}"
+      - checkout
+      - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "deploy/deploy.sh"
+workflows:
+  version: 2
+  auto-deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: master
